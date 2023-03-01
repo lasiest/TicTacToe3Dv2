@@ -412,7 +412,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &554015100
 SphereCollider:
   m_ObjectHideFlags: 0
@@ -1289,6 +1289,8 @@ MonoBehaviour:
   player2: {fileID: 554015099}
   StartButton: {fileID: 1750932193}
   Infotext: {fileID: 584722894}
+  player1InfoText: {fileID: 223974226}
+  player2InfoText: {fileID: 782628375}
 --- !u!4 &1936368766
 Transform:
   m_ObjectHideFlags: 0
@@ -1442,7 +1444,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!135 &1959254591
 SphereCollider:
   m_ObjectHideFlags: 0

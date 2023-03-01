@@ -43,6 +43,7 @@ MonoBehaviour:
   - SetInfoTextPlayer1
   - SetInfoTextPlayer2
   - SetPlayer2Text
+  - SetActiveStartButton
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 1
