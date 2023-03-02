@@ -4,6 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using UnityEngine.SceneManagement;
+using Photon.Realtime;
 
 [RequireComponent(typeof(PhotonView))]
 public class SpawnPlayer : MonoBehaviourPunCallbacks
@@ -60,13 +61,21 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
     //     photonView.RPC(nameof(SetActivePlayers), RpcTarget.Others);
     // }
 
+    public override void OnPlayerLeftRoom(Player otherPlayer)
+    {
+        Debug.Log("Someone Disconnected - On PLayer left room");
+        Infotext.text = "Other player disconnected";
+        MenuButton.SetActive(true);
+    }
+
     private void Update() {
         //Ini Buat Cek berapa orang yang lagi didalem room
         // Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
-        if(PhotonNetwork.CurrentRoom.PlayerCount == 1 && gameStarted){
-            Infotext.text = "Other player disconnected";
-            MenuButton.SetActive(true);
-        }
+        // if(PhotonNetwork.CurrentRoom.PlayerCount == 1 && gameStarted){
+        //     Infotext.text = "Other player disconnected";
+        //     MenuButton.SetActive(true);
+        // }
+
 
         if(player1.activeInHierarchy && player2.activeInHierarchy && photonView.IsMine && !gameStarted && PhotonNetwork.CurrentRoom.PlayerCount == 2){
             Infotext.text = "Start when you ready!";
@@ -139,8 +148,9 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         PhotonNetwork.LeaveRoom();
     }
 
-    
-
+    // void OnPlayerLeftRoom(){
+    //     Debug.Log("Someone Disconnected - On PLayer left room");
+    // }
 
         public void xWinCondition(){
         if(values[0] == 1 && values[1] == 1 && values[2] == 1){

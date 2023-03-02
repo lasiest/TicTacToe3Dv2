@@ -38,5 +38,4 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("Game");
     }
 
-
 }
