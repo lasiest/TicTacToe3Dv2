@@ -6,7 +6,7 @@ using TMPro;
 using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(PhotonView))]
-public class SpawnPlayer : MonoBehaviourPun
+public class SpawnPlayer : MonoBehaviourPunCallbacks
 {
     public GameObject player1;
     public GameObject player2;
@@ -61,17 +61,24 @@ public class SpawnPlayer : MonoBehaviourPun
     // }
 
     private void Update() {
-        if(player1.activeInHierarchy && player2.activeInHierarchy && photonView.IsMine && !gameStarted){
+        //Ini Buat Cek berapa orang yang lagi didalem room
+        // Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 1 && gameStarted){
+            Infotext.text = "Other player disconnected";
+            MenuButton.SetActive(true);
+        }
+
+        if(player1.activeInHierarchy && player2.activeInHierarchy && photonView.IsMine && !gameStarted && PhotonNetwork.CurrentRoom.PlayerCount == 2){
             Infotext.text = "Start when you ready!";
             StartButton.SetActive(true);
         }
-        if(gameStarted && photonView.IsMine && turn % 2 == 0 && !gameEnded){
+        if(gameStarted && photonView.IsMine && turn % 2 == 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
             Infotext.text = "YourTurn";
         }else if(gameStarted && photonView.IsMine && turn % 2 != 0){
             Infotext.text = "Wait for your turn";
         }
 
-        if(gameStarted && !photonView.IsMine && turn % 2 == 0 && !gameEnded){
+        if(gameStarted && !photonView.IsMine && turn % 2 == 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
             Infotext.text = "Wait for your turn";
         }else if(gameStarted && !photonView.IsMine && turn % 2 != 0){
             Infotext.text = "YourTurn";
@@ -116,10 +123,10 @@ public class SpawnPlayer : MonoBehaviourPun
     }
     
     public void RPC_buttonIsClick(int value){
-        if(photonView.IsMine && turn % 2 == 0 && !gameEnded){
+        if(photonView.IsMine && turn % 2 == 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
             photonView.RPC(nameof(buttonIsClick), RpcTarget.All, value);
             InstantiateObject();
-        }else if(!photonView.IsMine && turn % 2 != 0 && !gameEnded){
+        }else if(!photonView.IsMine && turn % 2 != 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
             photonView.RPC(nameof(buttonIsClick), RpcTarget.All, value);
             InstantiateObject();
         }else{
@@ -131,6 +138,9 @@ public class SpawnPlayer : MonoBehaviourPun
         SceneManager.LoadScene("Lobby");
         PhotonNetwork.LeaveRoom();
     }
+
+    
+
 
         public void xWinCondition(){
         if(values[0] == 1 && values[1] == 1 && values[2] == 1){
