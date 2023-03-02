@@ -18,14 +18,10 @@ public class SpawnPlayer : MonoBehaviourPun
     public bool gameEnded;
     public int turn;
     public int[] values;
-    // public GameObject player1InfoText;
-    // public GameObject player2InfoText;
 
     private void Awake() {
         player1.SetActive(false);
         player2.SetActive(false);
-        // player1InfoText.SetActive(false);
-        // player2InfoText.SetActive(false);
         board.SetActive(false);     
         StartButton.SetActive(false);
         RPC_SetActivePlayer();
@@ -41,13 +37,10 @@ public class SpawnPlayer : MonoBehaviourPun
             player1.SetActive(true);
             Debug.Log("set active player 1");
             Infotext.text = "Waiting for other player";
-            // player1InfoText.SetActive(true);
         }else if(player1.activeInHierarchy && !player2.activeInHierarchy){
             player2.SetActive(true);
             Debug.Log("set active player 2");
             Infotext.text = "Waiting for host";
-            // player1InfoText.SetActive(false);
-            // player2InfoText.SetActive(true);
         }
     }
 
@@ -55,14 +48,6 @@ public class SpawnPlayer : MonoBehaviourPun
         photonView.RPC(nameof(SetActivePlayers), RpcTarget.AllBuffered);
         Debug.Log("RPC_SetActivePlayer terpanggil");
     }
-
-    // [PunRPC]
-    // private void GamePlay(){
-    //     while(!gameEnded && turn < 9){
-    //         if(photonView.IsMine)
-    //         turn++;
-    //     }
-    // }
 
     private void RPC_SetActiveStartButton(){
         photonView.RPC(nameof(SetActivePlayers), RpcTarget.Others);
@@ -72,6 +57,17 @@ public class SpawnPlayer : MonoBehaviourPun
         if(player1.activeInHierarchy && player2.activeInHierarchy && photonView.IsMine && !gameStarted){
             Infotext.text = "Start when you ready!";
             StartButton.SetActive(true);
+        }
+        if(gameStarted && photonView.IsMine && turn % 2 == 0){
+            Infotext.text = "YourTurn";
+        }else if(gameStarted && photonView.IsMine && turn % 2 != 0){
+            Infotext.text = "Wait for your turn";
+        }
+
+        if(gameStarted && !photonView.IsMine && turn % 2 == 0){
+            Infotext.text = "Wait for your turn";
+        }else if(gameStarted && !photonView.IsMine && turn % 2 != 0){
+            Infotext.text = "YourTurn";
         }
     }
 
@@ -85,5 +81,17 @@ public class SpawnPlayer : MonoBehaviourPun
 
     public void RPC_StartFunction(){
         photonView.RPC(nameof(StartFunction), RpcTarget.All);
+    } 
+
+    [PunRPC]
+    public void buttonIsClick(int value){
+        if(values[value] == 0){
+            values[value] = (turn % 2) + 1;
+        }
+        turn++;            
+    }
+
+    public void RPC_buttonIsClick(int value){
+        photonView.RPC(nameof(buttonIsClick), RpcTarget.All, value);
     }
 }
