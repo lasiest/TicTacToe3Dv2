@@ -87,7 +87,7 @@ public class SpawnPlayer : MonoBehaviourPun
             }
             MenuButton.SetActive(true);
         }
-        if(turn > 8){
+        if(turn > 8 && !gameEnded){
             Infotext.text = "Tie";
             MenuButton.SetActive(true);
         }
