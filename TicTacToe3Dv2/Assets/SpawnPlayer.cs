@@ -10,7 +10,14 @@ public class SpawnPlayer : MonoBehaviourPun
     public GameObject player1;
     public GameObject player2;
     public GameObject StartButton;
+    public GameObject _lingkaran;
+    public GameObject _kotak;
+    public GameObject board;
     public TMP_Text Infotext;
+    public bool gameStarted;
+    public bool gameEnded;
+    public int turn;
+    public int[] values;
     // public GameObject player1InfoText;
     // public GameObject player2InfoText;
 
@@ -18,9 +25,13 @@ public class SpawnPlayer : MonoBehaviourPun
         player1.SetActive(false);
         player2.SetActive(false);
         // player1InfoText.SetActive(false);
-        // player2InfoText.SetActive(false);     
+        // player2InfoText.SetActive(false);
+        board.SetActive(false);     
         StartButton.SetActive(false);
         RPC_SetActivePlayer();
+        turn = 0;
+        gameStarted = false;
+        gameEnded = false;
 
     }
 
@@ -46,9 +57,10 @@ public class SpawnPlayer : MonoBehaviourPun
     }
 
     // [PunRPC]
-    // private void SetActiveStartButton(){
-    //     if(player1.activeInHierarchy && player2.activeInHierarchy){
-    //         StartButton.SetActive(true);
+    // private void GamePlay(){
+    //     while(!gameEnded && turn < 9){
+    //         if(photonView.IsMine)
+    //         turn++;
     //     }
     // }
 
@@ -57,9 +69,21 @@ public class SpawnPlayer : MonoBehaviourPun
     }
 
     private void Update() {
-        if(player1.activeInHierarchy && player2.activeInHierarchy && photonView.IsMine){
+        if(player1.activeInHierarchy && player2.activeInHierarchy && photonView.IsMine && !gameStarted){
             Infotext.text = "Start when you ready!";
             StartButton.SetActive(true);
         }
+    }
+
+    [PunRPC]
+    private void StartFunction(){
+        board.SetActive(true);
+        StartButton.SetActive(false);
+        Infotext.text = "";
+        gameStarted  = true;
+    }
+
+    public void RPC_StartFunction(){
+        photonView.RPC(nameof(StartFunction), RpcTarget.All);
     }
 }
