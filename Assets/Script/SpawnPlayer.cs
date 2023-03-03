@@ -11,6 +11,8 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
 {
     public GameObject player1;
     public GameObject player2;
+    public string player1name;
+    public string player2name;
     public GameObject StartButton;
     public GameObject MenuButton;
     public GameObject lingkaran;
@@ -18,7 +20,8 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
     public GameObject board;
     public TMP_Text Infotext;
     public TMP_Text InfoRoom;
-    public TMP_Text player;
+    public TMP_Text tmp_player1;
+    public TMP_Text tmp_player2;
     public bool gameStarted;
     public bool gameEnded;
     public int turn;
@@ -27,7 +30,7 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
     public bool xWin;
     public bool OWin;
 
-    private void Awake() {
+    private void Start() {
         player1.SetActive(false);
         player2.SetActive(false);
         board.SetActive(false);     
@@ -39,6 +42,17 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         MenuButton.SetActive(false);
         xWin = false;
         OWin = false;
+        Debug.Log(PhotonNetwork.LocalPlayer.NickName + photonView.IsMine);
+        RPC_SetName(PhotonNetwork.LocalPlayer.NickName, photonView.IsMine);
+        
+        SetMenuInfo();
+        // if(photonView.IsMine){
+        //     // player.text = PhotonNetwork.LocalPlayer.NickName;
+        //     player1name = PhotonNetwork.LocalPlayer.NickName;
+        // }else if(!photonView.IsMine){
+        //     // player.text = PhotonNetwork.LocalPlayer.NickName;
+        //     player2name = PhotonNetwork.LocalPlayer.NickName;
+        // }
     }
 
     [PunRPC]
@@ -59,51 +73,79 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         Debug.Log("RPC_SetActivePlayer terpanggil");
     }
 
+    [PunRPC]
+    private void SetName(string name, bool isPlayer1){
+        if(isPlayer1 && string.IsNullOrEmpty(player1name)){
+            Debug.Log("Set player 1 name" + name);
+            player1name = name;
+        }else if(!isPlayer1 && string.IsNullOrEmpty(player2name)){
+            Debug.Log("Set player 2 name" + name);
+            player2name = name;
+        }
+    }
+
+    private void RPC_SetName(string name, bool isPlayer1){
+        photonView.RPC(nameof(SetName), RpcTarget.AllBuffered, name, isPlayer1);
+    }
+
+    public override void OnPlayerEnteredRoom(Player otherPlayer)
+    {
+        SetMenuInfo();
+    }
+
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        Debug.Log("Someone Disconnected - On PLayer left room");
-        Infotext.text = "Other player disconnected";
-        MenuButton.SetActive(true);
+        SetMenuInfo();
+        if(gameStarted){
+            Debug.Log("Someone Disconnected - On PLayer left room");
+            Infotext.text = "Other player disconnected";
+            MenuButton.SetActive(true);
+            PhotonNetwork.LeaveRoom();               
+        }else{
+            Debug.Log(otherPlayer.NickName + " left");
+            player1.SetActive(false);
+            player2.SetActive(false);
+            SetActivePlayers();
+            player1name = player2name = "";
+            RPC_SetName(PhotonNetwork.LocalPlayer.NickName, photonView.IsMine);
+            StartButton.SetActive(false);
+        }
+    }
+
+    private void SetMenuInfo(){
+        InfoRoom.text = "Room ID: " + PhotonNetwork.CurrentRoom.Name + "\n" + "Current Player: " + PhotonNetwork.CurrentRoom.PlayerCount + "/2";
     }
 
     private void Update() {
-        //Ini Buat Cek berapa orang yang lagi didalem room
-        // Debug.Log(PhotonNetwork.CurrentRoom.PlayerCount);
-        // if(PhotonNetwork.CurrentRoom.PlayerCount == 1 && gameStarted){
-        //     Infotext.text = "Other player disconnected";
-        //     MenuButton.SetActive(true);
-        // }
-        InfoRoom.text = "Room ID: " + PhotonNetwork.CurrentRoom.Name + "\n" + "Current Player: " + PhotonNetwork.CurrentRoom.PlayerCount + "/2";
-
-        if(photonView.IsMine){
-            player.text = "Player 1";
-        }else if(!photonView.IsMine){
-            player.text = "Player 2";
-        }
+        tmp_player1.text = player1name;
+        tmp_player2.text = player2name;
+        
 
         if(player1.activeInHierarchy && player2.activeInHierarchy && photonView.IsMine && !gameStarted && PhotonNetwork.CurrentRoom.PlayerCount == 2){
             Infotext.text = "Start when you ready!";
             StartButton.SetActive(true);
         }
-        if(gameStarted && photonView.IsMine && turn % 2 == 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
-            Infotext.text = "YourTurn";
-        }else if(gameStarted && photonView.IsMine && turn % 2 != 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
-            Infotext.text = "Wait for your turn";
+        if(gameStarted && photonView.IsMine && turn % 2 == 0 && !gameEnded){
+            Infotext.text = player1name + " Turn";
+        }else if(gameStarted && photonView.IsMine && turn % 2 != 0 && !gameEnded){
+            Infotext.text =  player2name + " Turn";
         }
 
-        if(gameStarted && !photonView.IsMine && turn % 2 == 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
-            Infotext.text = "Wait for your turn";
-        }else if(gameStarted && !photonView.IsMine && turn % 2 != 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
-            Infotext.text = "YourTurn";
+        if(gameStarted && !photonView.IsMine && turn % 2 == 0 && !gameEnded){
+            Infotext.text = player1name + " Turn";
+        }else if(gameStarted && !photonView.IsMine && turn % 2 != 0 && !gameEnded){
+            Infotext.text =  player2name + " Turn";
         }
-        xWinCondition();
-        oWinCondition();            
+        if(!gameEnded){
+            xWinCondition();
+            oWinCondition();  
+        }
 
         if(gameEnded){
             if(xWin){
-                Infotext.text = "Player 1 Win the Game";
+                Infotext.text = player1name + " Win the Game";
             }else if(OWin){
-                Infotext.text = "Player 2 Win the Game";
+                Infotext.text = player2name + " Win the Game";
             }
             MenuButton.SetActive(true);
         }
@@ -134,10 +176,10 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
     }
     
     public void RPC_buttonIsClick(int value){
-        if(photonView.IsMine && turn % 2 == 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
+        if(photonView.IsMine && turn % 2 == 0 && !gameEnded){
             photonView.RPC(nameof(buttonIsClick), RpcTarget.All, value);
             InstantiateObject();
-        }else if(!photonView.IsMine && turn % 2 != 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
+        }else if(!photonView.IsMine && turn % 2 != 0 && !gameEnded){
             photonView.RPC(nameof(buttonIsClick), RpcTarget.All, value);
             InstantiateObject();
         }else{
@@ -147,7 +189,9 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
 
     public void backToMainMenu(){
         SceneManager.LoadScene("Lobby");
-        PhotonNetwork.LeaveRoom();
+        if(PhotonNetwork.InRoom){
+            PhotonNetwork.LeaveRoom();
+        }
     }
     
         public void xWinCondition(){
