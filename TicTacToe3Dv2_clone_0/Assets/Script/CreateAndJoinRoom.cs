@@ -26,16 +26,26 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
     public void joinRoom(){
         PhotonNetwork.JoinRoom(joinInput.text);
     }
+    public void RandomRoom(){
+        PhotonNetwork.JoinRandomRoom();
+    }
+
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        // base.OnJoinRoomFailed(returnCode, message);
         Debug.Log("Room not found");
         Infotext.text = "Room not found";
+    }
+
+    public override void OnJoinRandomFailed(short returnCode, string message){
+        Debug.Log("There isn't any room");
+        Infotext.text = "There isn't any room";
     }
 
     public override void OnJoinedRoom()
     {
         PhotonNetwork.LoadLevel("Game");
     }
+
+
 
 }

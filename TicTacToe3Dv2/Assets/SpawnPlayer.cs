@@ -17,6 +17,8 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
     public GameObject silang;
     public GameObject board;
     public TMP_Text Infotext;
+    public TMP_Text InfoRoom;
+    public TMP_Text player;
     public bool gameStarted;
     public bool gameEnded;
     public int turn;
@@ -57,10 +59,6 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         Debug.Log("RPC_SetActivePlayer terpanggil");
     }
 
-    // private void RPC_SetActiveStartButton(){
-    //     photonView.RPC(nameof(SetActivePlayers), RpcTarget.Others);
-    // }
-
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         Debug.Log("Someone Disconnected - On PLayer left room");
@@ -75,7 +73,13 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         //     Infotext.text = "Other player disconnected";
         //     MenuButton.SetActive(true);
         // }
+        InfoRoom.text = "Room ID: " + PhotonNetwork.CurrentRoom.Name + "\n" + "Current Player: " + PhotonNetwork.CurrentRoom.PlayerCount + "/2";
 
+        if(photonView.IsMine){
+            player.text = "Player 1";
+        }else if(!photonView.IsMine){
+            player.text = "Player 2";
+        }
 
         if(player1.activeInHierarchy && player2.activeInHierarchy && photonView.IsMine && !gameStarted && PhotonNetwork.CurrentRoom.PlayerCount == 2){
             Infotext.text = "Start when you ready!";
@@ -83,13 +87,13 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         }
         if(gameStarted && photonView.IsMine && turn % 2 == 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
             Infotext.text = "YourTurn";
-        }else if(gameStarted && photonView.IsMine && turn % 2 != 0){
+        }else if(gameStarted && photonView.IsMine && turn % 2 != 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
             Infotext.text = "Wait for your turn";
         }
 
         if(gameStarted && !photonView.IsMine && turn % 2 == 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
             Infotext.text = "Wait for your turn";
-        }else if(gameStarted && !photonView.IsMine && turn % 2 != 0){
+        }else if(gameStarted && !photonView.IsMine && turn % 2 != 0 && !gameEnded && PhotonNetwork.CurrentRoom.PlayerCount == 2){
             Infotext.text = "YourTurn";
         }
         xWinCondition();
@@ -126,9 +130,7 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         if(values[value] == 0){
             values[value] = (turn % 2) + 1;
             turn++;
-        }
-        // xWinCondition();
-        // oWinCondition();     
+        }  
     }
     
     public void RPC_buttonIsClick(int value){
@@ -147,11 +149,7 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         SceneManager.LoadScene("Lobby");
         PhotonNetwork.LeaveRoom();
     }
-
-    // void OnPlayerLeftRoom(){
-    //     Debug.Log("Someone Disconnected - On PLayer left room");
-    // }
-
+    
         public void xWinCondition(){
         if(values[0] == 1 && values[1] == 1 && values[2] == 1){
             Debug.Log("X win"); 
