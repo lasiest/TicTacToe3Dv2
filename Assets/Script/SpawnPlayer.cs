@@ -46,25 +46,25 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         RPC_SetName(PhotonNetwork.LocalPlayer.NickName, photonView.IsMine);
         
         SetMenuInfo();
-        // if(photonView.IsMine){
-        //     // player.text = PhotonNetwork.LocalPlayer.NickName;
-        //     player1name = PhotonNetwork.LocalPlayer.NickName;
-        // }else if(!photonView.IsMine){
-        //     // player.text = PhotonNetwork.LocalPlayer.NickName;
-        //     player2name = PhotonNetwork.LocalPlayer.NickName;
-        // }
     }
 
     [PunRPC]
     private void SetActivePlayers() {
-        if(!player1.activeInHierarchy){
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 1){
             player1.SetActive(true);
+            player2.SetActive(false);
             Debug.Log("set active player 1");
             Infotext.text = "Waiting for other player";
-        }else if(player1.activeInHierarchy && !player2.activeInHierarchy){
+        }else if(PhotonNetwork.CurrentRoom.PlayerCount == 2){
+            player1.SetActive(true);
             player2.SetActive(true);
             Debug.Log("set active player 2");
-            Infotext.text = "Waiting for host";
+            if(photonView.IsMine){
+                StartButton.SetActive(true);
+                Infotext.text = "Start when you ready!";                
+            }else{
+                Infotext.text = "Waiting for host";
+            }
         }
     }
 
@@ -82,49 +82,72 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
             Debug.Log("Set player 2 name" + name);
             player2name = name;
         }
+        SetMenuInfo();
     }
 
     private void RPC_SetName(string name, bool isPlayer1){
         photonView.RPC(nameof(SetName), RpcTarget.AllBuffered, name, isPlayer1);
     }
 
-    public override void OnPlayerEnteredRoom(Player otherPlayer)
-    {
-        SetMenuInfo();
-    }
-
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
-        SetMenuInfo();
+        player1name = player2name = "";
         if(gameStarted){
             Debug.Log("Someone Disconnected - On PLayer left room");
             Infotext.text = "Other player disconnected";
             MenuButton.SetActive(true);
+            SetMenuInfo();
             PhotonNetwork.LeaveRoom();               
         }else{
             Debug.Log(otherPlayer.NickName + " left");
-            player1.SetActive(false);
-            player2.SetActive(false);
             SetActivePlayers();
-            player1name = player2name = "";
             RPC_SetName(PhotonNetwork.LocalPlayer.NickName, photonView.IsMine);
+            SetMenuInfo();
             StartButton.SetActive(false);
         }
     }
 
-    private void SetMenuInfo(){
+    private void SetMenuInfo(){   
         InfoRoom.text = "Room ID: " + PhotonNetwork.CurrentRoom.Name + "\n" + "Current Player: " + PhotonNetwork.CurrentRoom.PlayerCount + "/2";
+        tmp_player1.text = player1name;
+        tmp_player2.text = player2name;    
     }
 
-    private void Update() {
-        tmp_player1.text = player1name;
-        tmp_player2.text = player2name;
-        
+    [PunRPC]
+    private void StartFunction(){
+        board.SetActive(true);
+        StartButton.SetActive(false);
+        Infotext.text = "";
+        gameStarted  = true;
+        Gameplay();
+    }
 
-        if(player1.activeInHierarchy && player2.activeInHierarchy && photonView.IsMine && !gameStarted && PhotonNetwork.CurrentRoom.PlayerCount == 2){
-            Infotext.text = "Start when you ready!";
-            StartButton.SetActive(true);
+    public void RPC_StartFunction(){
+        photonView.RPC(nameof(StartFunction), RpcTarget.All);
+    } 
+
+    [PunRPC]
+    public void buttonIsClick(int value){
+        if(values[value] == 0){
+            values[value] = (turn % 2) + 1;
+            turn++;
+            Gameplay();
+        }  
+    }
+    
+    public void RPC_buttonIsClick(int value){
+        if(photonView.IsMine && turn % 2 == 0 && !gameEnded){
+            photonView.RPC(nameof(buttonIsClick), RpcTarget.All, value);
+            InstantiateObject();
+        }else if(!photonView.IsMine && turn % 2 != 0 && !gameEnded){
+            photonView.RPC(nameof(buttonIsClick), RpcTarget.All, value);
+            InstantiateObject();
+        }else{
+            Debug.Log("Not your turn");
         }
+    }   
+
+    public void Gameplay(){
         if(gameStarted && photonView.IsMine && turn % 2 == 0 && !gameEnded){
             Infotext.text = player1name + " Turn";
         }else if(gameStarted && photonView.IsMine && turn % 2 != 0 && !gameEnded){
@@ -152,40 +175,8 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         if(turn > 8 && !gameEnded){
             Infotext.text = "Tie";
             MenuButton.SetActive(true);
-        }
+        }        
     }
-
-    [PunRPC]
-    private void StartFunction(){
-        board.SetActive(true);
-        StartButton.SetActive(false);
-        Infotext.text = "";
-        gameStarted  = true;
-    }
-
-    public void RPC_StartFunction(){
-        photonView.RPC(nameof(StartFunction), RpcTarget.All);
-    } 
-
-    [PunRPC]
-    public void buttonIsClick(int value){
-        if(values[value] == 0){
-            values[value] = (turn % 2) + 1;
-            turn++;
-        }  
-    }
-    
-    public void RPC_buttonIsClick(int value){
-        if(photonView.IsMine && turn % 2 == 0 && !gameEnded){
-            photonView.RPC(nameof(buttonIsClick), RpcTarget.All, value);
-            InstantiateObject();
-        }else if(!photonView.IsMine && turn % 2 != 0 && !gameEnded){
-            photonView.RPC(nameof(buttonIsClick), RpcTarget.All, value);
-            InstantiateObject();
-        }else{
-            Debug.Log("Not your turn");
-        }
-    }   
 
     public void backToMainMenu(){
         SceneManager.LoadScene("Lobby");
