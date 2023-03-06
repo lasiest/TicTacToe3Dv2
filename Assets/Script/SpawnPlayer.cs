@@ -32,7 +32,7 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
     public int[] flag;
     public bool xWin;
     public bool OWin;
-
+    public GameObject[] playerObject;
     private void Start() {  
         player1 = player2 = false;
         board.SetActive(false);     
@@ -44,11 +44,15 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         RPC_SetName(PhotonNetwork.LocalPlayer.NickName, photonView.IsMine);
         RPC_SetActivePlayer();
         SetMenuInfo();
+        
+    }
 
+    private void Update() {
+        playerObject = GameObject.FindGameObjectsWithTag("Player");
     }
 
     private void SetPlayer1(){
-        if(CharacterInfo.Instance.character == 1){
+       if(CharacterInfo.Instance.character == 1){
             PhotonNetwork.Instantiate(Character1.name, new Vector3(-6f,2f,0), Quaternion.identity);
             Debug.Log("1");
         }else if(CharacterInfo.Instance.character == 2){
@@ -71,25 +75,28 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
             PhotonNetwork.Instantiate(Character3.name, new Vector3(6f,2f,0), Quaternion.identity);
             Debug.Log("6");
         }
-        
     }
 
     [PunRPC]
     private void SetActivePlayers() {
-        if(PhotonNetwork.CurrentRoom.PlayerCount == 1){
+        // DestroyWithTag("Player");
+        if(PhotonNetwork.CurrentRoom.PlayerCount == 1 && photonView){
             if(photonView.IsMine && !player1){
                 SetPlayer1();
                 player1 = true;
+                player2 = false;                
             }
             Debug.Log("set active player 1");
             Infotext.text = "Waiting for other player";
         }else if(PhotonNetwork.CurrentRoom.PlayerCount == 2){
             if(!photonView.IsMine && !player2){
+                // DestroyWithTag("Player");
                 SetPlayer2();
+                player1 = true;
                 player2 = true;
-            }
-            Debug.Log("set active player 2");
-            if(photonView.IsMine){
+                Debug.Log("set active player 2");
+            }if(photonView.IsMine){
+                player1 = true;
                 StartButton.SetActive(true);
                 Infotext.text = "Start when you ready!";                
             }else{
@@ -119,9 +126,15 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         photonView.RPC(nameof(SetName), RpcTarget.AllBuffered, name, isPlayer1);
     }
 
+    // public override void OnPlayerEnteredRoom(Player newPlayer)
+    // {
+    //     DestroyWithTag("Player");
+    // }
+
     public override void OnPlayerLeftRoom(Player otherPlayer)
     {
         player1name = player2name = "";
+        DestroyWithTag("Player");
         if(gameStarted){
             Debug.Log("Someone Disconnected - On PLayer left room");
             Infotext.text = "Other player disconnected";
@@ -143,8 +156,10 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
     {
         GameObject[] destroyObject;
         destroyObject = GameObject.FindGameObjectsWithTag(destroyTag);
-        foreach (GameObject oneObject in destroyObject)
-            Destroy (oneObject);
+        foreach (GameObject oneObject in destroyObject){
+            PhotonNetwork.Destroy(oneObject);
+            Debug.Log("Something Destroyed");            
+        }
     }
 
     private void SetMenuInfo(){   
