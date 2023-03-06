@@ -2985,6 +2985,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   player1: {fileID: 1959254590}
   player2: {fileID: 554015099}
+  Character1: {fileID: 2601319780467997953, guid: d7dcbeb86b25c79499726e34406bc835, type: 3}
+  Character2: {fileID: 6633162233119570847, guid: 1ebbe14e02010424d99846f60288b0f5, type: 3}
+  Character3: {fileID: 4488054067984552525, guid: 263925db555fdc5439e287c828dd4efb, type: 3}
   player1name: 
   player2name: 
   StartButton: {fileID: 1750932193}

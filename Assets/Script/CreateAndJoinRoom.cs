@@ -13,6 +13,8 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
     public TMP_InputField joinInput;
     public TMP_Text Infotext;
 
+    // public int character;
+    
     public void InputNickname(){
         if(user_Nickname.text == ""){
             Infotext.text = "Name must not empty";
@@ -20,7 +22,7 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
             PhotonNetwork.NickName = user_Nickname.text;
             Debug.Log(user_Nickname.text);
             Infotext.text = "Name has been set as " + PhotonNetwork.NickName;
-            // PhotonNetwork.NickName = user_Nickname.text;            
+            // PhotonNetwork.NickName = user_Nickname.text;         
         }
 
     }
@@ -73,6 +75,15 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
         PhotonNetwork.LoadLevel("Game");
     }
 
+    // public void SetCharacter1(){
+    //     character = 1;
+    // }
+    // public void SetCharacter2(){
+    //     character = 2;
+    // }
+    // public void SetCharacter3(){
+    //     character = 3;
+    // }
 
 
 }

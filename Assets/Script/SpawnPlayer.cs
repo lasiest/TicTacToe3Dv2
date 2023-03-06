@@ -11,6 +11,9 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
 {
     public GameObject player1;
     public GameObject player2;
+    public GameObject Character1;
+    public GameObject Character2;
+    public GameObject Character3;
     public string player1name;
     public string player2name;
     public GameObject StartButton;
@@ -30,32 +33,65 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
     public bool xWin;
     public bool OWin;
 
-    private void Start() {
+    private void Start() {  
         player1.SetActive(false);
         player2.SetActive(false);
         board.SetActive(false);     
         StartButton.SetActive(false);
-        RPC_SetActivePlayer();
         turn = 0;
         gameStarted = false;
         gameEnded = false;
         MenuButton.SetActive(false);
         xWin = false;
         OWin = false;
-        Debug.Log(PhotonNetwork.LocalPlayer.NickName + photonView.IsMine);
+        // Debug.Log(PhotonNetwork.LocalPlayer.NickName + photonView.IsMine);
         RPC_SetName(PhotonNetwork.LocalPlayer.NickName, photonView.IsMine);
-        
+        RPC_SetActivePlayer();
         SetMenuInfo();
+
+    }
+
+    private void SetPlayer1(){
+        if(CharacterInfo.Instance.character == 1){
+            PhotonNetwork.Instantiate(Character1.name, new Vector3(-7f,2f,0), Quaternion.identity);
+            Debug.Log("1");
+        }else if(CharacterInfo.Instance.character == 2){
+            PhotonNetwork.Instantiate(Character2.name, new Vector3(-7f,2f,0), Quaternion.identity);
+            Debug.Log("2");
+        }else if(CharacterInfo.Instance.character == 3){
+            PhotonNetwork.Instantiate(Character3.name, new Vector3(-7f,2f,0), Quaternion.identity);
+            Debug.Log("3");
+        }
+    }
+
+    private void SetPlayer2(){
+        if(CharacterInfo.Instance.character == 1){
+            PhotonNetwork.Instantiate(Character1.name, new Vector3(7f,2f,0), Quaternion.identity);
+            Debug.Log("4");
+        }else if(CharacterInfo.Instance.character == 2){
+            PhotonNetwork.Instantiate(Character2.name, new Vector3(7f,2f,0), Quaternion.identity);
+            Debug.Log("5");
+        }else if(CharacterInfo.Instance.character == 3){
+            PhotonNetwork.Instantiate(Character3.name, new Vector3(7f,2f,0), Quaternion.identity);
+            Debug.Log("6");
+        }
+        
     }
 
     [PunRPC]
     private void SetActivePlayers() {
         if(PhotonNetwork.CurrentRoom.PlayerCount == 1){
+            if(photonView.IsMine){
+                SetPlayer1();
+            }
             player1.SetActive(true);
             player2.SetActive(false);
             Debug.Log("set active player 1");
             Infotext.text = "Waiting for other player";
         }else if(PhotonNetwork.CurrentRoom.PlayerCount == 2){
+            if(!photonView.IsMine){
+                SetPlayer2();
+            }
             player1.SetActive(true);
             player2.SetActive(true);
             Debug.Log("set active player 2");
@@ -100,11 +136,20 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
             PhotonNetwork.LeaveRoom();               
         }else{
             Debug.Log(otherPlayer.NickName + " left");
+            DestroyWithTag("Player");
             SetActivePlayers();
             RPC_SetName(PhotonNetwork.LocalPlayer.NickName, photonView.IsMine);
             SetMenuInfo();
             StartButton.SetActive(false);
         }
+    }
+
+    void DestroyWithTag (string destroyTag)
+    {
+        GameObject[] destroyObject;
+        destroyObject = GameObject.FindGameObjectsWithTag(destroyTag);
+        foreach (GameObject oneObject in destroyObject)
+            Destroy (oneObject);
     }
 
     private void SetMenuInfo(){   
