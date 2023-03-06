@@ -34,7 +34,10 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
             if(createInput.text == ""){
                 Debug.Log("Room name must not empty");
                 Infotext.text = "Room name must not empty";
-            }else{
+            }else if(CharacterInfo.Instance.character == 0){
+                Debug.Log("You must pick color");
+            }
+            else{
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 2;
             PhotonNetwork.CreateRoom(createInput.text, roomOptions, TypedLobby.Default);            
@@ -47,15 +50,23 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
         if(PhotonNetwork.NickName == ""){
            Infotext.text = "Name must not empty";     
         }else{
-            PhotonNetwork.JoinRoom(joinInput.text);
+            if(CharacterInfo.Instance.character == 0){
+                Debug.Log("You must pick color");
+            }else{
+                PhotonNetwork.JoinRoom(joinInput.text);
+            } 
         }
-
     }
+
     public void RandomRoom(){
         if(PhotonNetwork.NickName == ""){
             Infotext.text = "Name must not empty";    
         }else{
-            PhotonNetwork.JoinRandomRoom(); 
+            if(CharacterInfo.Instance.character == 0){
+                Debug.Log("You must pick color");
+            }else{
+                PhotonNetwork.JoinRandomRoom(); 
+            }
         }
     }
 
@@ -74,16 +85,6 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
     {
         PhotonNetwork.LoadLevel("Game");
     }
-
-    // public void SetCharacter1(){
-    //     character = 1;
-    // }
-    // public void SetCharacter2(){
-    //     character = 2;
-    // }
-    // public void SetCharacter3(){
-    //     character = 3;
-    // }
 
 
 }
