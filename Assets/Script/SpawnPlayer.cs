@@ -9,8 +9,8 @@ using Photon.Realtime;
 [RequireComponent(typeof(PhotonView))]
 public class SpawnPlayer : MonoBehaviourPunCallbacks
 {
-    public GameObject player1;
-    public GameObject player2;
+    public bool player1;
+    public bool player2;
     public GameObject Character1;
     public GameObject Character2;
     public GameObject Character3;
@@ -34,17 +34,13 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
     public bool OWin;
 
     private void Start() {  
-        player1.SetActive(false);
-        player2.SetActive(false);
+        player1 = player2 = false;
         board.SetActive(false);     
         StartButton.SetActive(false);
         turn = 0;
-        gameStarted = false;
-        gameEnded = false;
+        gameStarted = gameEnded  = false;
         MenuButton.SetActive(false);
-        xWin = false;
-        OWin = false;
-        // Debug.Log(PhotonNetwork.LocalPlayer.NickName + photonView.IsMine);
+        xWin = OWin = false;
         RPC_SetName(PhotonNetwork.LocalPlayer.NickName, photonView.IsMine);
         RPC_SetActivePlayer();
         SetMenuInfo();
@@ -53,26 +49,26 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
 
     private void SetPlayer1(){
         if(CharacterInfo.Instance.character == 1){
-            PhotonNetwork.Instantiate(Character1.name, new Vector3(-7f,2f,0), Quaternion.identity);
+            PhotonNetwork.Instantiate(Character1.name, new Vector3(-6f,2f,0), Quaternion.identity);
             Debug.Log("1");
         }else if(CharacterInfo.Instance.character == 2){
-            PhotonNetwork.Instantiate(Character2.name, new Vector3(-7f,2f,0), Quaternion.identity);
+            PhotonNetwork.Instantiate(Character2.name, new Vector3(-6f,2f,0), Quaternion.identity);
             Debug.Log("2");
         }else if(CharacterInfo.Instance.character == 3){
-            PhotonNetwork.Instantiate(Character3.name, new Vector3(-7f,2f,0), Quaternion.identity);
+            PhotonNetwork.Instantiate(Character3.name, new Vector3(-6f,2f,0), Quaternion.identity);
             Debug.Log("3");
         }
     }
 
     private void SetPlayer2(){
         if(CharacterInfo.Instance.character == 1){
-            PhotonNetwork.Instantiate(Character1.name, new Vector3(7f,2f,0), Quaternion.identity);
+            PhotonNetwork.Instantiate(Character1.name, new Vector3(6f,2f,0), Quaternion.identity);
             Debug.Log("4");
         }else if(CharacterInfo.Instance.character == 2){
-            PhotonNetwork.Instantiate(Character2.name, new Vector3(7f,2f,0), Quaternion.identity);
+            PhotonNetwork.Instantiate(Character2.name, new Vector3(6f,2f,0), Quaternion.identity);
             Debug.Log("5");
         }else if(CharacterInfo.Instance.character == 3){
-            PhotonNetwork.Instantiate(Character3.name, new Vector3(7f,2f,0), Quaternion.identity);
+            PhotonNetwork.Instantiate(Character3.name, new Vector3(6f,2f,0), Quaternion.identity);
             Debug.Log("6");
         }
         
@@ -81,19 +77,17 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
     [PunRPC]
     private void SetActivePlayers() {
         if(PhotonNetwork.CurrentRoom.PlayerCount == 1){
-            if(photonView.IsMine){
+            if(photonView.IsMine && !player1){
                 SetPlayer1();
+                player1 = true;
             }
-            player1.SetActive(true);
-            player2.SetActive(false);
             Debug.Log("set active player 1");
             Infotext.text = "Waiting for other player";
         }else if(PhotonNetwork.CurrentRoom.PlayerCount == 2){
-            if(!photonView.IsMine){
+            if(!photonView.IsMine && !player2){
                 SetPlayer2();
+                player2 = true;
             }
-            player1.SetActive(true);
-            player2.SetActive(true);
             Debug.Log("set active player 2");
             if(photonView.IsMine){
                 StartButton.SetActive(true);
@@ -137,6 +131,7 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         }else{
             Debug.Log(otherPlayer.NickName + " left");
             DestroyWithTag("Player");
+            player1 = player2 = false;
             SetActivePlayers();
             RPC_SetName(PhotonNetwork.LocalPlayer.NickName, photonView.IsMine);
             SetMenuInfo();
