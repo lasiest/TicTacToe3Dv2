@@ -2551,6 +2551,51 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   value: 1
   spawnPlayer: {fileID: 1936368765}
+--- !u!1 &1284174190
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1284174192}
+  - component: {fileID: 1284174191}
+  m_Layer: 0
+  m_Name: VoiceLogger
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1284174191
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1284174190}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a86f533fd9917dd4da8601e9eb542c96, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  LogLevel: 1
+--- !u!4 &1284174192
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1284174190}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 9
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1406202718
 GameObject:
   m_ObjectHideFlags: 0
@@ -2984,8 +3029,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf5d4087f6e5764b92610a8a8e3e81a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: {fileID: 1959254590}
-  player2: {fileID: 554015099}
+  player1: 0
+  player2: 0
   Character1: {fileID: 2601319780467997953, guid: d7dcbeb86b25c79499726e34406bc835, type: 3}
   Character2: {fileID: 6633162233119570847, guid: 1ebbe14e02010424d99846f60288b0f5, type: 3}
   Character3: {fileID: 4488054067984552525, guid: 263925db555fdc5439e287c828dd4efb, type: 3}
@@ -3007,6 +3052,7 @@ MonoBehaviour:
   flag: 000000000000000000000000000000000000000000000000000000000000000000000000
   xWin: 0
   OWin: 0
+  playerObject: []
 --- !u!4 &1936368766
 Transform:
   m_ObjectHideFlags: 0
@@ -3263,6 +3309,121 @@ MonoBehaviour:
   sceneViewId: 1
   InstantiationId: 0
   isRuntimeInstantiated: 0
+--- !u!1 &1997473630
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1997473631}
+  - component: {fileID: 1997473633}
+  - component: {fileID: 1997473632}
+  m_Layer: 0
+  m_Name: VoiceManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1997473631
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997473630}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 3, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 8
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1997473632
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997473630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 91175dcc15224463780e01a8a98b1b60, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  voiceDetection: 0
+  voiceDetectionThreshold: 0.01
+  voiceDetectionDelayMs: 500
+  interestGroup: 0
+  debugEchoMode: 0
+  reliableMode: 0
+  encrypt: 0
+  transmitEnabled: 1
+  samplingRate: 24000
+  frameDuration: 20000
+  bitrate: 30000
+  sourceType: 0
+  microphoneType: 0
+  audioClip: {fileID: 0}
+  loopAudioClip: 1
+  recordingEnabled: 1
+  audioSessionParameters:
+    Category: 4
+    Mode: 0
+    CategoryOptions: 0800000004000000
+  editorAudioSessionPreset: 0
+  androidNativeMicrophoneSettings:
+    AcousticEchoCancellation: 1
+    AutomaticGainControl: 1
+    NoiseSuppression: 1
+  stopRecordingWhenPaused: 0
+  useOnAudioFilterRead: 0
+  useMicrophoneTypeFallback: 1
+  recordWhenJoined: 1
+--- !u!114 &1997473633
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1997473630}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 81d9debcbaf99472bb70ffc2f99cb23f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DisconnectAfterKeepAlive: 0
+  KeepAliveInBackground: 60000
+  ApplyDontDestroyOnLoad: 1
+  runInBackground: 1
+  statsResetInterval: 1000
+  speakerPrefab: {fileID: 0}
+  primaryRecorder: {fileID: 1997473632}
+  usePrimaryRecorder: 0
+  Settings:
+    AppIdRealtime: 
+    AppIdFusion: 
+    AppIdChat: 
+    AppIdVoice: 
+    AppVersion: 
+    UseNameServer: 1
+    FixedRegion: 
+    Server: 
+    Port: 0
+    ProxyServer: 
+    Protocol: 0
+    EnableProtocolFallback: 1
+    AuthMode: 0
+    EnableLobbyStatistics: 0
+    NetworkLogging: 1
+  ShowSettings: 1
+  AutoConnectAndJoin: 1
+  AutoLeaveAndDisconnect: 1
+  usePunAppSettings: 1
+  usePunAuthValues: 1
 --- !u!1 &2054803075
 GameObject:
   m_ObjectHideFlags: 0

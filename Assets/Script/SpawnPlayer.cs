@@ -4,7 +4,7 @@ using UnityEngine;
 using Photon.Pun;
 using TMPro;
 using UnityEngine.SceneManagement;
-using Photon.Realtime;
+using Photon.Realtime;  
 
 [RequireComponent(typeof(PhotonView))]
 public class SpawnPlayer : MonoBehaviourPunCallbacks
