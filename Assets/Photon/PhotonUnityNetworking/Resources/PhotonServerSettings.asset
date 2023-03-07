@@ -46,6 +46,7 @@ MonoBehaviour:
   - SetActivePlayers
   - SetName
   - StartFunction
+  - IndicatorFunction
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1
