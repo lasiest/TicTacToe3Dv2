@@ -47,6 +47,9 @@ MonoBehaviour:
   - SetName
   - StartFunction
   - IndicatorFunction
+  - InstantiatePlayer
+  - Syncdata
+  - Prepare
   DisableAutoOpenWizard: 1
   ShowSettings: 1
   DevRegionSetOnce: 1

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Voice.PUN;
 using Photon.Pun;
+using Photon.Realtime;
 
 public class PlayerSpeakingScript : MonoBehaviourPun
 {
@@ -28,4 +29,9 @@ public class PlayerSpeakingScript : MonoBehaviourPun
             indicatorSpeaker.SetActive(false);
         }            
     }
+
+    // public void OnPlayerLeftRoom(Player otherPlayer){
+    //     Debug.Log("Destroy this game object");
+    //     PhotonNetwork.Destroy(gameObject);
+    // }
 }

@@ -3299,8 +3299,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fdf5d4087f6e5764b92610a8a8e3e81a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player1: 0
-  player2: 0
   Character1: {fileID: 2601319780467997953, guid: d7dcbeb86b25c79499726e34406bc835, type: 3}
   Character2: {fileID: 6633162233119570847, guid: 1ebbe14e02010424d99846f60288b0f5, type: 3}
   Character3: {fileID: 4488054067984552525, guid: 263925db555fdc5439e287c828dd4efb, type: 3}
@@ -3322,7 +3320,8 @@ MonoBehaviour:
   flag: 000000000000000000000000000000000000000000000000000000000000000000000000
   xWin: 0
   OWin: 0
-  playerObject: []
+  player1Characterinfo: 0
+  player2Characterinfo: 0
 --- !u!4 &1936368766
 Transform:
   m_ObjectHideFlags: 0
@@ -3591,7 +3590,6 @@ GameObject:
   - component: {fileID: 1997473633}
   - component: {fileID: 1997473632}
   - component: {fileID: 1997473635}
-  - component: {fileID: 1997473634}
   m_Layer: 0
   m_Name: VoiceManager
   m_TagString: Untagged
@@ -3696,28 +3694,6 @@ MonoBehaviour:
   AutoLeaveAndDisconnect: 1
   usePunAppSettings: 1
   usePunAuthValues: 1
---- !u!114 &1997473634
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1997473630}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: aa584fbee541324448dd18d8409c7a41, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  ObservedComponentsFoldoutOpen: 1
-  Group: 0
-  prefixField: -1
-  Synchronization: 3
-  OwnershipTransfer: 0
-  observableSearch: 2
-  ObservedComponents: []
-  sceneViewId: 4
-  InstantiationId: 0
-  isRuntimeInstantiated: 0
 --- !u!114 &1997473635
 MonoBehaviour:
   m_ObjectHideFlags: 0

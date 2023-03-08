@@ -15,6 +15,7 @@ GameObject:
   - component: {fileID: 5853198919037150212}
   - component: {fileID: -6866841653435087421}
   - component: {fileID: 2295018119316035153}
+  - component: {fileID: 6783632384341424517}
   m_Layer: 0
   m_Name: Red
   m_TagString: Player
@@ -119,7 +120,7 @@ MonoBehaviour:
   Group: 0
   prefixField: -1
   Synchronization: 3
-  OwnershipTransfer: 0
+  OwnershipTransfer: 1
   observableSearch: 2
   ObservedComponents: []
   sceneViewId: 0
@@ -151,6 +152,22 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   photonVoiceView: {fileID: -6866841653435087421}
   indicatorSpeaker: {fileID: 2752131795885644744}
+--- !u!114 &6783632384341424517
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2601319780467997953}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 627855c7f81362d41938ffe0b1475957, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_SynchronizePosition: 1
+  m_SynchronizeRotation: 1
+  m_SynchronizeScale: 0
+  m_UseLocal: 1
 --- !u!1 &2752131795885644744
 GameObject:
   m_ObjectHideFlags: 0

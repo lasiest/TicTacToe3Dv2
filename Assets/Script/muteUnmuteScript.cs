@@ -8,7 +8,6 @@ using TMPro;
 
 public class muteUnmuteScript : MonoBehaviour
 {
-
     public Recorder recorder;
     public TMP_Text buttonText; 
 
@@ -25,4 +24,5 @@ public class muteUnmuteScript : MonoBehaviour
             recorder.TransmitEnabled = true;
         }
     }
+
 }

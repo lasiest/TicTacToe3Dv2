@@ -3306,7 +3306,8 @@ namespace Photon.Pun
             }
         }
 
-        #endif
+
+#endif
 
     }
 }

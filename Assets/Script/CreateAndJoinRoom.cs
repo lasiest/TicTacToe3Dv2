@@ -72,13 +72,13 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        Debug.Log("Room not found");
-        Infotext.text = "Room not found";
+        Debug.Log(message);
+        Infotext.text = message;
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message){
-        Debug.Log("There isn't any room");
-        Infotext.text = "There isn't any room";
+        Debug.Log(message);
+        Infotext.text = message;
     }
 
     public override void OnJoinedRoom()
