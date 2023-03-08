@@ -21,23 +21,24 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
         }else{
             PhotonNetwork.NickName = user_Nickname.text;
             Debug.Log(user_Nickname.text);
-            Infotext.text = "Name has been set as " + PhotonNetwork.NickName;
+            // Infotext.text = "Name has been set as " + PhotonNetwork.NickName;
             // PhotonNetwork.NickName = user_Nickname.text;         
         }
 
     }
 
     public void createRoom(){
+        InputNickname();
         if(PhotonNetwork.NickName == ""){
             Infotext.text = "Name must not empty";
         }else{
-            if(createInput.text == ""){
+            if(CharacterInfo.Instance.character == 0){
+                Debug.Log("You must pick color");
+                Infotext.text = "You must pick color";
+            }else if(createInput.text == ""){
                 Debug.Log("Room name must not empty");
                 Infotext.text = "Room name must not empty";
-            }else if(CharacterInfo.Instance.character == 0){
-                Debug.Log("You must pick color");
-            }
-            else{
+            }else{
             RoomOptions roomOptions = new RoomOptions();
             roomOptions.MaxPlayers = 2;
             PhotonNetwork.CreateRoom(createInput.text, roomOptions, TypedLobby.Default);            
@@ -47,11 +48,13 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
 
     }
     public void joinRoom(){
+        InputNickname();
         if(PhotonNetwork.NickName == ""){
            Infotext.text = "Name must not empty";     
         }else{
             if(CharacterInfo.Instance.character == 0){
                 Debug.Log("You must pick color");
+                Infotext.text = "You must pick color";
             }else{
                 PhotonNetwork.JoinRoom(joinInput.text);
             } 
@@ -59,11 +62,13 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
     }
 
     public void RandomRoom(){
+        InputNickname();
         if(PhotonNetwork.NickName == ""){
             Infotext.text = "Name must not empty";    
         }else{
             if(CharacterInfo.Instance.character == 0){
                 Debug.Log("You must pick color");
+                Infotext.text = "You must pick color";
             }else{
                 PhotonNetwork.JoinRandomRoom(); 
             }
