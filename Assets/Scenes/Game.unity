@@ -3320,8 +3320,6 @@ MonoBehaviour:
   flag: 000000000000000000000000000000000000000000000000000000000000000000000000
   xWin: 0
   OWin: 0
-  player1Characterinfo: 0
-  player2Characterinfo: 0
 --- !u!4 &1936368766
 Transform:
   m_ObjectHideFlags: 0

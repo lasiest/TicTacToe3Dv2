@@ -25,4 +25,8 @@ public class CharacterInfo : MonoBehaviour
     public void SetCharacter3(){
         character = 3;
     }
+
+    public void SetCharacter(int id){
+        character = id;
+    }
 }

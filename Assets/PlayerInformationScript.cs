@@ -5,11 +5,14 @@ using Photon.Voice.PUN;
 using Photon.Pun;
 using Photon.Realtime;
 
-public class PlayerSpeakingScript : MonoBehaviourPun
-{   
+public class PlayerInformationScript : MonoBehaviour
+{
+    public Player_ScriptableObject player_ScriptableObject;
+    public Material color;
     public PhotonVoiceView photonVoiceView;
     public GameObject indicatorSpeaker;
     private void Awake() {
+        color = player_ScriptableObject.color;
         indicatorSpeaker.SetActive(false);
     }
 
