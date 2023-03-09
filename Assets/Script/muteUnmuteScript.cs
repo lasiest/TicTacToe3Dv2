@@ -6,7 +6,7 @@ using Photon.Voice.PUN;
 using Photon.Voice.Unity;
 using TMPro;
 
-public class muteUnmuteScript : MonoBehaviour
+public class MuteUnmuteScript : MonoBehaviour
 {
     public Recorder recorder;
     public TMP_Text buttonText; 

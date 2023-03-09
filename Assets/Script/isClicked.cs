@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
-public class isClicked : MonoBehaviour
+public class IsClicked : MonoBehaviour
 {   
     public int value;
     public SpawnPlayer spawnPlayer;

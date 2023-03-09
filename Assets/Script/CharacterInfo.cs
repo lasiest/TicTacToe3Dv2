@@ -5,7 +5,8 @@ using UnityEngine;
 public class CharacterInfo : MonoBehaviour
 {
     public static CharacterInfo Instance {get; private set;}
-    public int character;
+    public Player_ScriptableObject player_ScriptableObject;
+    public Player_ScriptableObject[] arrayOfCharacterSelection;
 
     private void Awake() {
         if(Instance == null){
@@ -16,17 +17,7 @@ public class CharacterInfo : MonoBehaviour
         }
     }
 
-    public void SetCharacter1(){
-        character = 1;
-    }
-    public void SetCharacter2(){
-        character = 2;
-    }
-    public void SetCharacter3(){
-        character = 3;
-    }
-
-    public void SetCharacter(int id){
-        character = id;
+    public void SetPlayer_ScriptableObject(Player_ScriptableObject scriptableObject){
+        player_ScriptableObject = scriptableObject;
     }
 }

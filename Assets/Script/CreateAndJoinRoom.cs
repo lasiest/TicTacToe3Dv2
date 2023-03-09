@@ -12,17 +12,13 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
     public TMP_InputField createInput;
     public TMP_InputField joinInput;
     public TMP_Text Infotext;
-
-    // public int character;
     
     public void InputNickname(){
         if(user_Nickname.text == ""){
             Infotext.text = "Name must not empty";
         }else{
             PhotonNetwork.NickName = user_Nickname.text;
-            Debug.Log(user_Nickname.text);
-            // Infotext.text = "Name has been set as " + PhotonNetwork.NickName;
-            // PhotonNetwork.NickName = user_Nickname.text;         
+            Debug.Log(user_Nickname.text);       
         }
 
     }
@@ -32,7 +28,7 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
         if(PhotonNetwork.NickName == ""){
             Infotext.text = "Name must not empty";
         }else{
-            if(CharacterInfo.Instance.character == 0){
+            if(CharacterInfo.Instance.player_ScriptableObject == null){
                 Debug.Log("You must pick color");
                 Infotext.text = "You must pick color";
             }else if(createInput.text == ""){
@@ -52,7 +48,10 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
         if(PhotonNetwork.NickName == ""){
            Infotext.text = "Name must not empty";     
         }else{
-            if(CharacterInfo.Instance.character == 0){
+            if(createInput.text == ""){
+                Debug.Log("Room name must not empty");
+                Infotext.text = "Room name must not empty";
+            }else if(CharacterInfo.Instance.player_ScriptableObject == null){
                 Debug.Log("You must pick color");
                 Infotext.text = "You must pick color";
             }else{
@@ -66,13 +65,19 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
         if(PhotonNetwork.NickName == ""){
             Infotext.text = "Name must not empty";    
         }else{
-            if(CharacterInfo.Instance.character == 0){
+            if(CharacterInfo.Instance.player_ScriptableObject == null){
                 Debug.Log("You must pick color");
                 Infotext.text = "You must pick color";
             }else{
                 PhotonNetwork.JoinRandomRoom(); 
             }
         }
+    }
+
+    public override void OnCreateRoomFailed(short returnCode, string message)
+    {
+        Debug.Log(message);
+        Infotext.text = message;
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
