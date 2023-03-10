@@ -46,7 +46,7 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
         if(PhotonNetwork.NickName == ""){
            Infotext.text = "Name must not empty";     
         }else{
-            if(createInput.text == ""){
+            if(joinInput.text == ""){
                 Infotext.text = "Room name must not empty";
             }else if(CharacterInfo.Instance.player_ScriptableObject == null){
                 Infotext.text = "You must pick color";
