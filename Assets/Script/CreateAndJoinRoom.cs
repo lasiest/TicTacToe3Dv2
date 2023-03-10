@@ -17,8 +17,7 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
         if(user_Nickname.text == ""){
             Infotext.text = "Name must not empty";
         }else{
-            PhotonNetwork.NickName = user_Nickname.text;
-            Debug.Log(user_Nickname.text);       
+            PhotonNetwork.NickName = user_Nickname.text;    
         }
 
     }
@@ -29,7 +28,6 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
             Infotext.text = "Name must not empty";
         }else{
             if(CharacterInfo.Instance.player_ScriptableObject == null){
-                Debug.Log("You must pick color");
                 Infotext.text = "You must pick color";
             }else if(createInput.text == ""){
                 Debug.Log("Room name must not empty");
@@ -49,10 +47,8 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
            Infotext.text = "Name must not empty";     
         }else{
             if(createInput.text == ""){
-                Debug.Log("Room name must not empty");
                 Infotext.text = "Room name must not empty";
             }else if(CharacterInfo.Instance.player_ScriptableObject == null){
-                Debug.Log("You must pick color");
                 Infotext.text = "You must pick color";
             }else{
                 PhotonNetwork.JoinRoom(joinInput.text);
@@ -66,7 +62,6 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
             Infotext.text = "Name must not empty";    
         }else{
             if(CharacterInfo.Instance.player_ScriptableObject == null){
-                Debug.Log("You must pick color");
                 Infotext.text = "You must pick color";
             }else{
                 PhotonNetwork.JoinRandomRoom(); 
@@ -76,18 +71,15 @@ public class CreateAndJoinRoom : MonoBehaviourPunCallbacks
 
     public override void OnCreateRoomFailed(short returnCode, string message)
     {
-        Debug.Log(message);
         Infotext.text = message;
     }
 
     public override void OnJoinRoomFailed(short returnCode, string message)
     {
-        Debug.Log(message);
         Infotext.text = message;
     }
 
     public override void OnJoinRandomFailed(short returnCode, string message){
-        Debug.Log(message);
         Infotext.text = message;
     }
 

@@ -16,7 +16,6 @@ public class PlayerInformationScript : MonoBehaviour, IPunInstantiateMagicCallba
     {
         object[] instantiateData = info.photonView.InstantiationData;
         int id = (int)instantiateData[0];
-        Debug.Log(id);
 
         Player_ScriptableObject player_ScriptableObject = Array.Find(CharacterInfo.Instance.arrayOfCharacterSelection, x => x.id  == id);
         rend = GetComponent<MeshRenderer>();

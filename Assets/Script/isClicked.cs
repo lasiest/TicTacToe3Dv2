@@ -9,10 +9,6 @@ public class IsClicked : MonoBehaviour
     public SpawnPlayer spawnPlayer;
     private void OnMouseDown() {
         Debug.Log(value);
-        // spawnPlayer.buttonIsClick(value);
         spawnPlayer.RPC_buttonIsClick(value);
-        // if(spawnPlayer.turn % 2 == 0){
-        //     Instantiate
-        // }
     }
 }

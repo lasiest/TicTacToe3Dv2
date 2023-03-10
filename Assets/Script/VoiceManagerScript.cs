@@ -6,12 +6,11 @@ using Photon.Voice.PUN;
 using Photon.Voice.Unity;
 using TMPro;
 
-public class MuteUnmuteScript : MonoBehaviour
+public class VoiceManagerScript : MonoBehaviour
 {
     public Recorder recorder;
     public TMP_Text buttonText; 
 
-    // Update is called once per frame
     private void Awake() {
         buttonText.text = "Click to mute";
     }

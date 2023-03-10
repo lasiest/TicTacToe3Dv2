@@ -11,9 +11,6 @@ using System;
 public class SpawnPlayer : MonoBehaviourPunCallbacks
 {   
     public GameObject DefaultCharacter;
-    public GameObject Character1;
-    public GameObject Character2;
-    public GameObject Character3;
     public string player1name;
     public string player2name;
     public GameObject StartButton;
@@ -46,36 +43,6 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
         SetMenuInfo();
     }  
     
-    // private void SetPlayer1(int character){
-    //    if(character == 1){
-    //         PhotonNetwork.Instantiate(Character1.name, new Vector3(-6f,2f,0), Quaternion.identity);
-    //         Debug.Log("1");
-    //     }else if(character == 2){
-    //         PhotonNetwork.Instantiate(Character2.name, new Vector3(-6f,2f,0), Quaternion.identity);
-    //         Debug.Log("2");
-    //     }else if(character == 3){
-    //         PhotonNetwork.Instantiate(Character3.name, new Vector3(-6f,2f,0), Quaternion.identity);
-    //         Debug.Log("3");
-    //     }else{
-    //         Debug.Log("Not 1 2 3 but " + character);
-    //     }
-    // }
-
-    // private void SetPlayer2(int character){
-    //     if(character == 1){
-    //         PhotonNetwork.Instantiate(Character1.name, new Vector3(6f,2f,0), Quaternion.identity);
-    //         Debug.Log("4");
-    //     }else if(character == 2){
-    //         PhotonNetwork.Instantiate(Character2.name, new Vector3(6f,2f,0), Quaternion.identity);
-    //         Debug.Log("5");
-    //     }else if(character == 3){
-    //         PhotonNetwork.Instantiate(Character3.name, new Vector3(6f,2f,0), Quaternion.identity);
-    //         Debug.Log("6");
-    //     }else{
-    //         Debug.Log("Not 1 2 3 but " + character);
-    //     }
-    // }
-    
     private void SetPlayer1_SO(){
         object[] mycustominitdata = new object[]{CharacterInfo.Instance.player_ScriptableObject.id};
         GameObject newplayer = PhotonNetwork.Instantiate(DefaultCharacter.name, new Vector3(-7f,2f,0), Quaternion.identity, 0, mycustominitdata) as GameObject;
@@ -88,13 +55,10 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
 
     private void Spawn(){
         if(photonView.IsMine){
-            // SetPlayer1(CharacterInfo.Instance.character);
             SetPlayer1_SO();
         }else{
-            // SetPlayer2(CharacterInfo.Instance.character);
             SetPlayer2_SO();
         }
-        Debug.Log("Spawn Completed");
     }
 
     [PunRPC]
@@ -134,13 +98,11 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
     {
         player1name = player2name = "";
         if(gameStarted){
-            Debug.Log("Someone Disconnected - On PLayer left room");
             Infotext.text = "Other player disconnected";
             MenuButton.SetActive(true);
             SetMenuInfo();
             PhotonNetwork.LeaveRoom();               
         }else{
-            Debug.Log(otherPlayer.NickName + " left");
             GameObject temp;
             temp = GameObject.FindGameObjectWithTag("Player");
             temp.transform.position = new Vector3(-6f,2f,0);
@@ -186,8 +148,6 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
             photonView.RPC(nameof(buttonIsClick), RpcTarget.All, value);
         }else if(!photonView.IsMine && turn % 2 != 0 && !gameEnded){
             photonView.RPC(nameof(buttonIsClick), RpcTarget.All, value);
-        }else{
-            Debug.Log("Not your turn");
         }
     }   
 
@@ -230,36 +190,28 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
     }
     
         public void xWinCondition(){
-        if(values[0] == 1 && values[1] == 1 && values[2] == 1){
-            Debug.Log("X win"); 
+        if(values[0] == 1 && values[1] == 1 && values[2] == 1){ 
             gameEnded = true;
             xWin = true;
-        }else if(values[3] == 1 && values[4] == 1 && values[5] == 1){
-            Debug.Log("X win"); 
+        }else if(values[3] == 1 && values[4] == 1 && values[5] == 1){ 
             gameEnded = true;
             xWin = true;
         }else if(values[6] == 1 && values[7] == 1 && values[8] == 1){
-            Debug.Log("X win"); 
             gameEnded = true;
             xWin = true;
         }else if(values[0] == 1 && values[3] == 1 && values[6] == 1){
-            Debug.Log("X win"); 
             gameEnded = true;
             xWin = true;
         }else if(values[1] == 1 && values[4] == 1 && values[7] == 1){
-            Debug.Log("X win"); 
             gameEnded = true;
             xWin = true;
         }else if(values[2] == 1 && values[5] == 1 && values[8] == 1){
-            Debug.Log("X win"); 
             gameEnded = true;
             xWin = true;
         }else if(values[0] == 1 && values[4] == 1 && values[8] == 1){
-            Debug.Log("X win"); 
             gameEnded = true;
             xWin = true;
         }else if(values[2] == 1 && values[4] == 1 && values[6] == 1){
-            Debug.Log("X win"); 
             gameEnded = true;
             xWin = true;
         }
@@ -267,35 +219,27 @@ public class SpawnPlayer : MonoBehaviourPunCallbacks
 
     public void oWinCondition(){
         if(values[0] == 2 && values[1] == 2 && values[2] == 2){
-            Debug.Log("O win"); 
             gameEnded = true;
             OWin = true;
         }else if(values[3] == 2 && values[4] == 2 && values[5] == 2){
-            Debug.Log("O win"); 
             gameEnded = true;
             OWin = true;
         }else if(values[6] == 2 && values[7] == 2 && values[8] == 2){
-            Debug.Log("O win"); 
             gameEnded = true;
             OWin = true;
         }else if(values[0] == 2 && values[3] == 2 && values[6] == 2){
-            Debug.Log("O win"); 
             gameEnded = true;
             OWin = true;
         }else if(values[1] == 2 && values[4] == 2 && values[7] == 2){
-            Debug.Log("O win"); 
             gameEnded = true;
             OWin = true;
         }else if(values[2] == 2 && values[5] == 2 && values[8] == 2){
-            Debug.Log("O win"); 
             gameEnded = true;
             OWin = true;
         }else if(values[0] == 2 && values[4] == 2 && values[8] == 2){
-            Debug.Log("O win"); 
             gameEnded = true;
             OWin = true;
         }else if(values[2] == 2 && values[4] == 2 && values[6] == 2){
-            Debug.Log("O win"); 
             gameEnded = true;
             OWin = true;
         }        
